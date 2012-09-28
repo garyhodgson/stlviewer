@@ -1,0 +1,14 @@
+#stlviewer {
+	width: 100%;
+	height: 98%;
+	min-height: 300px;
+	border: 1px solid grey;
+}
+
+body {
+	background-color: black;
+}
+
+.settings {
+	color: grey;
+}

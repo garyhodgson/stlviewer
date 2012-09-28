@@ -1,0 +1,98 @@
+<html>
+<head>
+	<title>STL Viewer</title>
+	
+	<link href="css/stlviewer.css" rel="stylesheet">
+
+	<script src="js/jquery.js"></script>
+	<script src="js/modernizr.js"></script>
+	<script src="js/jscolor/jscolor.js"></script>
+	<script src="js/thingiview/Three.js"></script>
+    <script src="js/thingiview/plane.js"></script>
+    <script src="js/thingiview/thingiview.js"></script>
+
+
+	<script>
+	$(document).ready(function() {
+
+		thingiurlbase = "js/thingiview";
+        thingiview = new Thingiview("stlviewer");
+        thingiview.setObjectColor('#C0D8F0');
+        thingiview.setBackgroundColor('#000');
+        thingiview.initScene();
+
+		if (!Modernizr.draganddrop) {
+			$('#message').html("Your browser cannot handle drag and drop.");
+		}
+
+		function handleDrop(e) {
+			e.stopPropagation(); // Stops some browsers from redirecting.
+			e.preventDefault();
+
+			var files = e.dataTransfer.files;
+			for (var i = 0, f; f = files[i]; i++) {
+				// Read the File objects in this FileList.
+
+				if (f.type != 'application/vnd.ms-pki.stl'){
+					if (f.type != ''){
+						alert("File of type \'" + f.type+"'\' not recognised.")
+					} else {
+						alert("File type not recognised.")
+					}				
+					continue;
+				}
+				
+				var reader = new FileReader();
+
+				// Closure to capture the file information.
+				reader.onload = (function(theFile) {
+					return function(e) {
+
+						var fileContents = e.target.result;
+
+						if (fileContents.match(/^solid/)) {
+							thingiview.loadSTLString(fileContents);
+
+						} else {
+							var reader2 = new FileReader();
+							reader2.onload = (function(theFile){
+								return function(e) {
+									thingiview.loadSTLBinary(e.target.result);
+								};
+							})(theFile);
+							reader2.readAsBinaryString(theFile);
+						}
+					};
+				})(f);
+
+				reader.readAsText(f);
+
+				$('#message').text(f.name);
+			}
+		}
+		
+		var dropZone = document.getElementsByTagName("body")[0];
+		dropZone.addEventListener('drop', handleDrop, false);
+
+		$('#backround_colour').change(function(){
+			thingiview.setBackgroundColor('#'+$(this).val());
+		});
+
+		$('#model_colour').change(function(){
+			thingiview.setObjectColor('#'+$(this).val());
+		});
+
+	});
+	</script>
+</head>
+<body>
+
+	<div id="stlviewer"></div>
+	<div id="message"></div>
+	<div class="settings">
+		Background: <input class="color" id="backround_colour" value="000000"> &nbsp; 	Model: <input class="color" id="model_colour" value="C0D8F0">
+	</div>
+	
+
+</body>
+</html>
