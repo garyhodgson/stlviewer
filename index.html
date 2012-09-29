@@ -19,7 +19,8 @@
         thingiview = new Thingiview("stlviewer");
         thingiview.setObjectColor('#C0D8F0');
         thingiview.setBackgroundColor('#000');
-        thingiview.initScene();
+		thingiview.initScene();
+        thingiview.setCameraView('iso');
 
 		if (!Modernizr.draganddrop) {
 			$('#message').html("Your browser cannot handle drag and drop.");
