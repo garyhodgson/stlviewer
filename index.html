@@ -72,8 +72,13 @@
 			}
 		}
 		
-		var dropZone = document.getElementsByTagName("body")[0];
+		var dropZone = document.getElementById("stlviewer");
 		dropZone.addEventListener('drop', handleDrop, false);
+
+		// for Firefox
+		dropZone.ondragover = function(e) {
+    		e.preventDefault();
+		};
 
 		$('#backround_colour').change(function(){
 			thingiview.setBackgroundColor('#'+$(this).val());
