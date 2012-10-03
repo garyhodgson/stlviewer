@@ -34,12 +34,10 @@
 			for (var i = 0, f; f = files[i]; i++) {
 				// Read the File objects in this FileList.
 
-				if (f.type != 'application/vnd.ms-pki.stl'){
-					if (f.type != ''){
-						alert("File of type \'" + f.type+"'\' not recognised.")
-					} else {
-						alert("File type not recognised.")
-					}				
+				console.log(f.name + " - " + f.type)
+
+				if (!/.*\.stl$/.test(f.name)){
+					alert("File type not recognised.")
 					continue;
 				}
 				
