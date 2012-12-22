@@ -36,7 +36,7 @@
 
 				console.log(f.name + " - " + f.type)
 
-				if (!/.*\.stl$/.test(f.name)){
+				if (!/.*\.stl$/i.test(f.name)){
 					alert("File type not recognised.")
 					continue;
 				}
